@@ -6,5 +6,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
+  private _title = 'Localcast Weather';
+  public get title() {
+    return this._title;
+  }
+  public set title(value) {
+    this._title = value;
+  }
 }

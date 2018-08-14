@@ -24,20 +24,19 @@ interface ICurrentWeatherData{
 @Injectable({
   providedIn: 'root'
 })
-export class WeatherService {
+export class WeatherService implements IWeatherService {
 
   constructor(private httpClient :HttpClient) {  }
 
   getCurrentWeather(city:string, country:string) : Observable<ICurrentWeather> {
-    console.log("Calling API");
-    return this.httpClient.get<ICurrentWeatherData>(
+      return this.httpClient.get<ICurrentWeatherData>(
       `${environment.baseUrl}api.openweathermap.org/data/2.5/weather?q=${city},${country}&appid=${environment.appId}`
         ).pipe(
-          map(data => this.transoformToICurrentWeather(data))
+          map(data => this.transformToICurrentWeather(data))
         )
   }
 
-  private transoformToICurrentWeather(data :ICurrentWeatherData) : ICurrentWeather{
+  private transformToICurrentWeather(data :ICurrentWeatherData) : ICurrentWeather{
     return {
       city:data.name,
       country:data.sys.country,
@@ -51,4 +50,8 @@ export class WeatherService {
   private convertKelvinToFahrenheit(kelvin: number) :number{
     return kelvin * 9 /5 -459.67
   }
+}
+
+export interface IWeatherService {
+  getCurrentWeather(_city:string, country:string): Observable<ICurrentWeather>
 }
